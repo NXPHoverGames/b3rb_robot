@@ -9,6 +9,13 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <exec_depend>mrbuggy3_description</exec_depend>
+  <exec_depend>mrbuggy3_nav2</exec_depend>
+  <exec_depend>synapse_ros</exec_depend>
+  <exec_depend>ldlidar_stl_ros2</exec_depend>
+  <exec_depend>rf2o_laser_odometry</exec_depend>
+  <exec_depend>corti</exec_depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
