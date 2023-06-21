@@ -87,7 +87,7 @@ def generate_launch_description():
             ('use_sim_time', LaunchConfiguration('use_sim_time')),
             ('stl27l', 'true'),
             ('rf2o', 'true'),
-            ('rf2o_tf', 'true')
+            ('rf2o_tf', 'false')
         ]
     )
 
@@ -144,6 +144,32 @@ def generate_launch_description():
             ('use_sim_time', LaunchConfiguration('use_sim_time'))
         ]
     )
+    
+    tf_to_odom = Node(
+        package='corti',
+        executable='tf_to_odom',
+        output='screen',
+        condition=IfCondition(LaunchConfiguration('corti')),
+        parameters=[{
+            'base_frame': 'map',
+            'target_frame': 'base_link',
+            }],
+        remappings=[
+            ('/odom', '/cerebri/in/odometry')
+            ])
+
+    odom_to_tf = Node(
+        package='corti',
+        executable='odom_to_tf',
+        output='screen',
+        parameters=[{
+            'base_frame': 'odom',
+            'target_frame': 'base_link',
+            }],
+        remappings=[
+            ('/odom', '/odom')
+            ])
+
 
     # Define LaunchDescription variable
     ld = LaunchDescription(ARGUMENTS)
@@ -155,5 +181,7 @@ def generate_launch_description():
     ld.add_action(corti)
     ld.add_action(slam)
     ld.add_action(localization)
+    ld.add_action(odom_to_tf)
+    ld.add_action(tf_to_odom)
     return ld
 

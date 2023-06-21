@@ -20,10 +20,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('rf2o', default_value='true',
                           choices=['true', 'false'],
                           description='Run rf2o laser odometry'),
-    DeclareLaunchArgument('stl27l_tf', default_value='true',
-                          choices=['true', 'false'],
-                          description='Run STL27L TF.'),
-    DeclareLaunchArgument('rf2o_tf', default_value='true',
+    DeclareLaunchArgument('rf2o_tf', default_value='false',
                           choices=['true', 'false'],
                           description='Run rf2o laser odometry TF'),
     DeclareLaunchArgument('use_sim_time', default_value='false',
@@ -37,7 +34,6 @@ def generate_launch_description():
     stl27l_node = Node(
         package='ldlidar_stl_ros2',
         executable='ldlidar_stl_ros2_node',
-        name='STL27L',
         output='screen',
         parameters=[
             {'product_name': 'LDLiDAR_STL27L'},
@@ -55,8 +51,8 @@ def generate_launch_description():
     rf2o_odom_node = Node(
         package='rf2o_laser_odometry',
         executable='rf2o_laser_odometry_node',
-        name='rf2o_laser_odometry',
         output='screen',
+        arguments=['--ros-args', '--log-level', 'warn'],
         parameters=[{
             'laser_scan_topic' : '/scan',
             'odom_topic' : '/odom',
@@ -64,28 +60,14 @@ def generate_launch_description():
             'base_frame_id' : 'base_link',
             'odom_frame_id' : 'odom',
             'init_pose_from_topic' : '',
-            'freq' : 20.0,
+            'freq' : 10.0,
             'use_sim_time': LaunchConfiguration('use_sim_time')}],
         condition=IfCondition(LaunchConfiguration("rf2o"))
     )
-
-    # stl27l_tf_node = Node(
-    #     name='base_link_to_stl27l',
-    #     package='tf2_ros',
-    #     executable='static_transform_publisher',
-    #     output='screen',
-    #     arguments=[
-    #         '--x', '0.0', '--y', '0.0', '--z', '0.0',
-    #         '--roll', '0.0', '--pitch', '0.0', '--yaw', '0.0',
-    #         '--frame-id', 'lidar_link', '--child-frame-id', 'base_link'],
-    #     condition=IfCondition(LaunchConfiguration("stl27l_tf"))
-    # )
-
 
     # Define LaunchDescription variable
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(stl27l_node)
     ld.add_action(rf2o_odom_node)
-    #ld.add_action(stl27l_tf_node)
     return ld
 
