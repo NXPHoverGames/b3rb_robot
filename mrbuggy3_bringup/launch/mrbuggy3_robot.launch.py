@@ -23,7 +23,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('nav2', default_value='true',
                           choices=['true', 'false'],
                           description='Run nav2'),
-    DeclareLaunchArgument('corti', default_value='false',
+    DeclareLaunchArgument('corti', default_value='true',
                           choices=['true', 'false'],
                           description='Run corti'),
     DeclareLaunchArgument('laser', default_value='true',
@@ -163,8 +163,8 @@ def generate_launch_description():
         executable='odom_to_tf',
         output='screen',
         parameters=[{
-            'base_frame': 'odom',
-            'target_frame': 'base_link',
+            'async': False,
+            'sync_dt': .02,
             }],
         remappings=[
             ('/odom', '/odom')
