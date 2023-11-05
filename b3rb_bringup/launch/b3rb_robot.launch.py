@@ -37,8 +37,8 @@ ARGUMENTS = [
                           description='use_sim_time'),
     DeclareLaunchArgument('model', default_value='lidar',
                           choices=['base', 'lidar'],
-                          description='El Mandadero Model'),
-    DeclareLaunchArgument('robot_name', default_value='mrbuggy3',
+                          description='B3RB Model'),
+    DeclareLaunchArgument('robot_name', default_value='b3rb',
                           description='Robot name')
 ]
 
@@ -46,29 +46,29 @@ ARGUMENTS = [
 def generate_launch_description():
 
     # Directories
-    pkg_mrbuggy3_bringup = get_package_share_directory(
-        'mrbuggy3_bringup')
-    pkg_mrbuggy3_description = get_package_share_directory(
-        'mrbuggy3_description')
-    pkg_mrbuggy3_nav2 = get_package_share_directory(
-        'mrbuggy3_nav2')
+    pkg_b3rb_bringup = get_package_share_directory(
+        'b3rb_bringup')
+    pkg_b3rb_description = get_package_share_directory(
+        'b3rb_description')
+    pkg_b3rb_nav2 = get_package_share_directory(
+        'b3rb_nav2')
     pkg_synapse_ros = get_package_share_directory(
         'synapse_ros')
     pkg_corti = get_package_share_directory('corti')
 
     # Paths
     nav2_launch = PathJoinSubstitution(
-        [pkg_mrbuggy3_nav2, 'launch', 'nav2.launch.py'])
+        [pkg_b3rb_nav2, 'launch', 'nav2.launch.py'])
     corti_launch = PathJoinSubstitution(
         [pkg_corti, 'launch', 'corti.launch.py'])
     slam_launch = PathJoinSubstitution(
-        [pkg_mrbuggy3_nav2, 'launch', 'slam.launch.py'])
+        [pkg_b3rb_nav2, 'launch', 'slam.launch.py'])
     localization_launch = PathJoinSubstitution(
-        [pkg_mrbuggy3_nav2, 'launch', 'localization.launch.py'])
+        [pkg_b3rb_nav2, 'launch', 'localization.launch.py'])
     robot_description_launch = PathJoinSubstitution(
-        [pkg_mrbuggy3_description, 'launch', 'robot_description.launch.py'])
+        [pkg_b3rb_description, 'launch', 'robot_description.launch.py'])
     laser_launch = PathJoinSubstitution(
-        [pkg_mrbuggy3_bringup, 'launch', 'laser.launch.py'])
+        [pkg_b3rb_bringup, 'launch', 'laser.launch.py'])
     synapse_ros_launch = PathJoinSubstitution(
         [pkg_synapse_ros, 'launch', 'synapse_ros.launch.py'])
 
@@ -76,7 +76,7 @@ def generate_launch_description():
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
         default_value=PathJoinSubstitution(
-            [pkg_mrbuggy3_nav2, 'maps', 'depot.yaml']),
+            [pkg_b3rb_nav2, 'maps', 'depot.yaml']),
         description='Full path to map yaml file to load')
 
     # laser

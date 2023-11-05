@@ -1,2 +1,2 @@
-# mrbuggy3_robot
-Robot packages for the MR Buggy3.
+# b3rb_robot
+Robot packages for the B3RB.
