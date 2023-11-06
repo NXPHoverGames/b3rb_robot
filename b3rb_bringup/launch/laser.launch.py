@@ -17,12 +17,6 @@ ARGUMENTS = [
     DeclareLaunchArgument('stl27l', default_value='true',
                           choices=['true', 'false'],
                           description='Run STL27L.'),
-    DeclareLaunchArgument('rf2o', default_value='true',
-                          choices=['true', 'false'],
-                          description='Run rf2o laser odometry'),
-    DeclareLaunchArgument('rf2o_tf', default_value='false',
-                          choices=['true', 'false'],
-                          description='Run rf2o laser odometry TF'),
     DeclareLaunchArgument('use_sim_time', default_value='false',
                           choices=['true', 'false'],
                           description='use_sim_time')
@@ -48,26 +42,8 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration("stl27l"))
     )
 
-    rf2o_odom_node = Node(
-        package='rf2o_laser_odometry',
-        executable='rf2o_laser_odometry_node',
-        output='screen',
-        arguments=['--ros-args', '--log-level', 'warn'],
-        parameters=[{
-            'laser_scan_topic' : '/scan',
-            'odom_topic' : '/odom',
-            'publish_tf' : LaunchConfiguration('rf2o_tf'),
-            'base_frame_id' : 'base_link',
-            'odom_frame_id' : 'odom',
-            'init_pose_from_topic' : '',
-            'freq' : 10.0,
-            'use_sim_time': LaunchConfiguration('use_sim_time')}],
-        condition=IfCondition(LaunchConfiguration("rf2o"))
-    )
-
     # Define LaunchDescription variable
     ld = LaunchDescription(ARGUMENTS)
     ld.add_action(stl27l_node)
-    ld.add_action(rf2o_odom_node)
     return ld
 

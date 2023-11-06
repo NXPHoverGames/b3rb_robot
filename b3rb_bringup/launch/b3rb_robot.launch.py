@@ -85,9 +85,7 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('laser')),
         launch_arguments=[
             ('use_sim_time', LaunchConfiguration('use_sim_time')),
-            ('stl27l', 'true'),
-            ('rf2o', 'true'),
-            ('rf2o_tf', 'false')
+            ('stl27l', 'true')
         ]
     )
 
