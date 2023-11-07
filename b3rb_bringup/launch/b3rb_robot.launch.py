@@ -55,7 +55,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([PathJoinSubstitution(
             [get_package_share_directory('b3rb_bringup'), 'launch', 'laser.launch.py'])]),
         condition=IfCondition(LaunchConfiguration('laser')),
-        launch_arguments=[('stl27l', 'true')
+        launch_arguments=[('stl27l', 'true'),
                           ('use_sim_time', LaunchConfiguration('use_sim_time'))]
     )
 
