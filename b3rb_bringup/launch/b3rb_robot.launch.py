@@ -32,7 +32,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('description', default_value='true',
                           choices=['true', 'false'],
                           description='Run description'),
-    DeclareLaunchArgument('use_sim_time', default_value='true',
+    DeclareLaunchArgument('use_sim_time', default_value='false',
                           choices=['true', 'false'],
                           description='Use sim time'),
     DeclareLaunchArgument('log_level', default_value='error',
@@ -110,6 +110,20 @@ def generate_launch_description():
             ('/odom', '/cerebri/in/odometry')
             ])
 
+    odom_to_tf = Node(
+        condition=IfCondition(LaunchConfiguration('corti')),
+        package='corti',
+        executable='odom_to_tf',
+        output='screen',
+        parameters=[{
+            'async': False,
+            'sync_dt': 0.02,
+            'use_sim_time': LaunchConfiguration('use_sim_time'),
+            }],
+        remappings=[
+            ('/odom', '/cerebri/out/odometry')
+            ])
+
     # Define LaunchDescription variable
     return LaunchDescription(ARGUMENTS + [
         robot_description,
@@ -117,7 +131,8 @@ def generate_launch_description():
         nav2,
         corti,
         slam,
-	laser,
+        laser,
         localization,
-        tf_to_odom
+        #tf_to_odom,
+        odom_to_tf,
     ])
