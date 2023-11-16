@@ -36,9 +36,15 @@ def generate_launch_description():
             {'port_name': '/dev/ttymxc2'},
             {'port_baudrate': 921600},
             {'laser_scan_dir': True},
-            {'enable_angle_crop_func': True},
-            {'angle_crop_min': 170.0},
-            {'angle_crop_max': 190.0}],
+            {'enable_angle_crop_func': False},
+            {'enable_box_crop_func': True},
+            {'angle_crop_min': 175.0},
+            {'angle_crop_max': 210.0},
+            {'x_crop_min': -0.3},
+            {'x_crop_max': -0.1},
+            {'y_crop_min': -0.03},
+            {'y_crop_max': 0.15},
+            {'bins': 720}],
         condition=IfCondition(LaunchConfiguration("stl27l"))
     )
 
