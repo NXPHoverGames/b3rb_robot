@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 
 
 ARGUMENTS = [
-    DeclareLaunchArgument('sync', default_value='true',
+    DeclareLaunchArgument('sync', default_value='false',
                           choices=['true', 'false'],
                           description='Run async or sync SLAM'),
     DeclareLaunchArgument('localization', default_value='slam',
