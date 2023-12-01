@@ -1,16 +1,23 @@
 from os import environ
+import netifaces as ni
 from ament_index_python.packages import get_package_share_directory
-
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.actions import ExecuteProcess
 from launch.conditions import LaunchConfigurationEquals, IfCondition
 from launch_ros.actions import Node
 
+ip = ni.ifaddresses('mlan0')[ni.AF_INET][0]['addr']
+print('Websocket Address: {:s}:4242'.format(ip))
 
 ARGUMENTS = [
+    DeclareLaunchArgument('address', default_value='{:s}'.format(ip),
+                          description='ip address for foxglove'),
+    DeclareLaunchArgument('capabilities', default_value='[clientPublish,services,connectionGraph,assets]',
+                          description='capabilities for foxglove'),
     DeclareLaunchArgument('sync', default_value='false',
                           choices=['true', 'false'],
                           description='Run async or sync SLAM'),
@@ -38,6 +45,10 @@ ARGUMENTS = [
     DeclareLaunchArgument('log_level', default_value='error',
                           choices=['info', 'warn', 'error'],
                           description='log level'),
+    DeclareLaunchArgument('foxglove',
+                          default_value='true',
+                          choices=['true', 'false'],
+                          description='use foxglove websocket'),
 ]
 
 
@@ -98,20 +109,6 @@ def generate_launch_description():
             ('map', PathJoinSubstitution([get_package_share_directory(
                 'b3rb_nav2'), 'maps', LaunchConfiguration('map_yaml')]))])
 
-    tf_to_odom = Node(
-        condition=IfCondition(LaunchConfiguration('corti')),
-        package='corti',
-        executable='tf_to_odom',
-        output='screen',
-        parameters=[{
-            'base_frame': 'map',
-            'target_frame': 'base_link',
-            'use_sim_time': LaunchConfiguration('use_sim_time'),
-            }],
-        remappings=[
-            ('/odom', '/cerebri/in/odometry')
-            ])
-
     odom_to_tf = Node(
         condition=IfCondition(LaunchConfiguration('corti')),
         package='corti',
@@ -126,15 +123,23 @@ def generate_launch_description():
             ('/odom', '/cerebri/out/odometry')
             ])
 
+    foxglove_websockets = IncludeLaunchDescription(
+        XMLLaunchDescriptionSource([PathJoinSubstitution(
+            [get_package_share_directory('foxglove_bridge'), 'launch', 'foxglove_bridge_launch.xml'])]),
+        condition=IfCondition(LaunchConfiguration('foxglove')),
+        launch_arguments=[('address', LaunchConfiguration('address')),
+                        ('capabilities', LaunchConfiguration('capabilities')),
+                        ('use_sim_time', LaunchConfiguration('use_sim_time'))])
+
     # Define LaunchDescription variable
     return LaunchDescription(ARGUMENTS + [
         robot_description,
         synapse_ros,
         nav2,
         corti,
+        foxglove_websockets,
         slam,
         laser,
         localization,
-        #tf_to_odom,
         odom_to_tf,
     ])
