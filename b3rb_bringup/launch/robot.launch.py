@@ -11,7 +11,7 @@ from launch.conditions import LaunchConfigurationEquals, IfCondition
 from launch_ros.actions import Node
 
 ip = ni.ifaddresses('mlan0')[ni.AF_INET][0]['addr']
-print('Websocket Address: {:s}:4242'.format(ip))
+print('mlan0: {:s}:4242'.format(ip))
 
 ARGUMENTS = [
     DeclareLaunchArgument('address', default_value='{:s}'.format(ip),
@@ -46,11 +46,10 @@ ARGUMENTS = [
                           choices=['info', 'warn', 'error'],
                           description='log level'),
     DeclareLaunchArgument('foxglove',
-                          default_value='true',
+                          default_value='false',
                           choices=['true', 'false'],
                           description='use foxglove websocket'),
 ]
-
 
 def generate_launch_description():
     synapse_ros = IncludeLaunchDescription(
