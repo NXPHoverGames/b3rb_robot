@@ -42,7 +42,7 @@ ARGUMENTS = [
         choices=['info', 'warn', 'error'],
         description='log level'),
     DeclareLaunchArgument('cam',
-        default_value='false',
+        default_value='true',
         choices=['true', 'false'],
         description='Use camera'),
     DeclareLaunchArgument('cam_topic',
@@ -61,7 +61,7 @@ ARGUMENTS = [
         default_value='2',
         description='Hardware image rotation enum: (0): none, (1): rotate-90, (2): rotate-180, (3): rotate-270, (4): horizontal-flip, (5): vertical-flip'),
     DeclareLaunchArgument('foxglove',
-        default_value='false',
+        default_value='true',
         choices=['true', 'false'],
         description='use foxglove websocket'),
     DeclareLaunchArgument('address', default_value='{:s}'.format(ip),
@@ -77,6 +77,15 @@ ARGUMENTS = [
     DeclareLaunchArgument('param_whitelist',
         default_value=['[""]'],
         description='param_whitelist for foxglove'),
+    DeclareLaunchArgument('send_buffer_limit',
+        default_value='10000000',
+        description='send_buffer_limit for foxglove in bytes'),
+    DeclareLaunchArgument('num_threads',
+        default_value='0',
+        description='num_threads for foxglove per core'),
+    DeclareLaunchArgument('use_compression',
+        default_value='false',
+        description='use_compression for foxglove'),
 ]
 
 def generate_launch_description():
@@ -159,6 +168,9 @@ def generate_launch_description():
                         ('topic_whitelist', LaunchConfiguration('topic_whitelist')),
                         ('service_whitelist', LaunchConfiguration('service_whitelist')),
                         ('param_whitelist', LaunchConfiguration('param_whitelist')),
+                        ('send_buffer_limit', LaunchConfiguration('send_buffer_limit')),
+                        ('num_threads', LaunchConfiguration('num_threads')),
+                        ('use_compression', LaunchConfiguration('use_compression')),
                         ('use_sim_time', LaunchConfiguration('use_sim_time'))])
 
     cam = Node(
