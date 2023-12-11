@@ -52,7 +52,7 @@ ARGUMENTS = [
         default_value='/dev/video3',
         description='Camera device.'),
     DeclareLaunchArgument('cam_fps',
-        default_value='15',
+        default_value='30',
         description='Camera frames per second.'),
     DeclareLaunchArgument('cam_res',
         default_value='[320,240]',
