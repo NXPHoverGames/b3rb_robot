@@ -1,6 +1,6 @@
 <launch>
   <arg name="device" default="/dev/video3"/>
-  <arg name="fps" default="15"/>
+  <arg name="fps" default="30"/>
   <arg name="width" default="320"/>
   <arg name="height" default="240"/>
 
