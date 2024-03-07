@@ -54,7 +54,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('capabilities', default_value='[clientPublish,services,connectionGraph,assets]',
         description='capabilities for foxglove'),
     DeclareLaunchArgument('topic_whitelist',
-        default_value=['["/camera/image_raw/compressed","/camera/camera_info","/cerebri/out/status","/cerebri/out/nav_sat_fix","/global_costmap/costmap","/map","global_costmap/published_footprint","/plan","/robot_description","/tf"]'],
+        default_value=['["/camera/image_raw/compressed","/camera/camera_info","/cerebri/out/status","/cerebri/in/pixy_vector","/debugImage","/cerebri/out/nav_sat_fix","/global_costmap/costmap","/map","global_costmap/published_footprint","/plan","/robot_description","/tf"]'],
         description='topic_whitelist for foxglove'),
     DeclareLaunchArgument('service_whitelist',
         default_value=['[""]'],
@@ -171,8 +171,8 @@ def generate_launch_description():
         corti,
         foxglove_websockets,
         slam,
-        laser,
         localization,
         odom_to_tf,
         cam,
+        nxp_cup_vision,
     ])

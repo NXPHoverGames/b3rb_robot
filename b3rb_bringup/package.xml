@@ -12,6 +12,7 @@
   <exec_depend>b3rb_description</exec_depend>
   <exec_depend>b3rb_nav2</exec_depend>
   <exec_depend>synapse_ros</exec_depend>
+  <exec_depend>nxp_cup_vision</exec_depend>
   <exec_depend>ldlidar_stl_ros2</exec_depend>
   <exec_depend>corti</exec_depend>
 
