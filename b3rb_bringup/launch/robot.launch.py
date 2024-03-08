@@ -35,6 +35,9 @@ ARGUMENTS = [
     DeclareLaunchArgument('description', default_value='true',
         choices=['true', 'false'],
         description='Run description'),
+    DeclareLaunchArgument('track_vision', default_value='true',
+        choices=['true', 'false'],
+        description='Track vision node'),
     DeclareLaunchArgument('use_sim_time', default_value='false',
         choices=['true', 'false'],
         description='Use sim time'),
@@ -91,6 +94,12 @@ def generate_launch_description():
             ('stl27l', 'true'),
             ('use_sim_time', LaunchConfiguration('use_sim_time'))
             ]
+    )
+    
+    nxp_cup_vision = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([PathJoinSubstitution(
+            [get_package_share_directory('nxp_cup_vision'), 'launch', 'nxp_cup_vision_launch.py'])]),
+        condition=IfCondition(LaunchConfiguration('track_vision')),
     )
 
     # Robot description
