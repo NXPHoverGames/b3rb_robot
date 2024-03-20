@@ -38,6 +38,9 @@ ARGUMENTS = [
     DeclareLaunchArgument('track_vision', default_value='true',
         choices=['true', 'false'],
         description='Track vision node'),
+    DeclareLaunchArgument('debug_track_vision', default_value='true',
+        choices=['true', 'false'],
+        description='Debug Track vision node'),
     DeclareLaunchArgument('use_sim_time', default_value='false',
         choices=['true', 'false'],
         description='Use sim time'),
@@ -57,7 +60,7 @@ ARGUMENTS = [
     DeclareLaunchArgument('capabilities', default_value='[clientPublish,services,connectionGraph,assets]',
         description='capabilities for foxglove'),
     DeclareLaunchArgument('topic_whitelist',
-        default_value=['["/camera/image_raw/compressed","/camera/camera_info","/cerebri/out/status","/cerebri/in/pixy_vector","/debugImage","/cerebri/out/nav_sat_fix","/global_costmap/costmap","/map","global_costmap/published_footprint","/plan","/robot_description","/tf"]'],
+        default_value=['["/camera/image_raw/compressed","/camera/camera_info","/cerebri/out/status","/cerebri/in/pixy_vector","nxp_cup/debug_image","/cerebri/out/nav_sat_fix","/global_costmap/costmap","/map","global_costmap/published_footprint","/plan","/robot_description","/tf"]'],
         description='topic_whitelist for foxglove'),
     DeclareLaunchArgument('service_whitelist',
         default_value=['[""]'],
@@ -97,9 +100,12 @@ def generate_launch_description():
     )
     
     nxp_cup_vision = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([PathJoinSubstitution(
-            [get_package_share_directory('nxp_cup_vision'), 'launch', 'nxp_cup_vision_launch.py'])]),
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution(
+                [get_package_share_directory('nxp_cup_vision'), 'launch', 'nxp_cup_vision_launch.py'])
+            ]),
         condition=IfCondition(LaunchConfiguration('track_vision')),
+        launch_arguments={'debug': LaunchConfiguration('debug_track_vision')}.items(),
     )
 
     # Robot description
