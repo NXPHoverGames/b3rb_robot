@@ -189,5 +189,6 @@ def generate_launch_description():
         localization,
         odom_to_tf,
         cam,
+        laser,
         nxp_cup_vision,
     ])
