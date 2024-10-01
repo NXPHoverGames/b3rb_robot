@@ -167,12 +167,12 @@ def generate_launch_description():
     return LaunchDescription(ARGUMENTS + [
         robot_description,
         synapse_ros,
-        nav2,
-        corti,
+        # nav2,
+        # corti,
         foxglove_websockets,
-        slam,
+        # slam,
         laser,
-        localization,
+        # localization,
         odom_to_tf,
         cam,
     ])

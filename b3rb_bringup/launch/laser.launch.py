@@ -47,7 +47,7 @@ def generate_launch_description():
             {'bins': 360},
             {'range_min': 0.03},
             {'range_max': 5.0},
-            {'pub_rate': 2.0}
+            {'pub_rate': 4.0}
             ],
         condition=IfCondition(LaunchConfiguration("stl27l"))
     )
